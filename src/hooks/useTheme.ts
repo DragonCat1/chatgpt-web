@@ -22,7 +22,10 @@ export function useTheme() {
   const themeOverrides = computed<GlobalThemeOverrides>(() => {
     if (isDark.value) {
       return {
-        common: {},
+        common: {
+          primaryColor: '#8b5cf6',
+          primaryColorHover: '#8b5cf6',
+        },
       }
     }
     return {}

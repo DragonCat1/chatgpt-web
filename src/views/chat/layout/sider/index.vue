@@ -3,7 +3,7 @@ import type { CSSProperties } from 'vue'
 import { computed, ref, watch } from 'vue'
 import { NButton, NLayoutSider } from 'naive-ui'
 import List from './List.vue'
-import Footer from './Footer.vue'
+import Setting from './Setting.vue'
 import { useAppStore, useChatStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { PromptStore } from '@/components/common'
@@ -72,7 +72,7 @@ watch(
     <div class="flex flex-col h-full" :style="mobileSafeArea">
       <main class="flex flex-col flex-1 min-h-0">
         <div class="p-4">
-          <NButton dashed block @click="handleAdd">
+          <NButton block secondary type="tertiary" size="large" @click="handleAdd">
             {{ $t('chat.newChatButton') }}
           </NButton>
         </div>
@@ -80,12 +80,14 @@ watch(
           <List />
         </div>
         <div class="p-4">
-          <NButton block @click="show = true">
+          <NButton secondary round block @click="show = true">
             {{ $t('store.siderButton') }}
           </NButton>
         </div>
+        <div>
+          <Setting />
+        </div>
       </main>
-      <Footer />
     </div>
   </NLayoutSider>
   <template v-if="isMobile">

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { NButton, NInput, NPopconfirm, NSelect, useMessage } from 'naive-ui'
-import type { Language, Theme } from '@/store/modules/app/helper'
+import type { Language } from '@/store/modules/app/helper'
 import { SvgIcon } from '@/components/common'
 import { useAppStore, useUserStore } from '@/store'
 import type { UserInfo } from '@/store/modules/user/helper'
@@ -16,15 +16,11 @@ const { isMobile } = useBasicLayout()
 
 const ms = useMessage()
 
-const theme = computed(() => appStore.theme)
-
 const userInfo = computed(() => userStore.userInfo)
 
 const avatar = ref(userInfo.value.avatar ?? '')
 
 const name = ref(userInfo.value.name ?? '')
-
-const description = ref(userInfo.value.description ?? '')
 
 const language = computed({
   get() {
@@ -34,24 +30,6 @@ const language = computed({
     appStore.setLanguage(value)
   },
 })
-
-const themeOptions: { label: string; key: Theme; icon: string }[] = [
-  {
-    label: 'Auto',
-    key: 'auto',
-    icon: 'ri:contrast-line',
-  },
-  {
-    label: 'Light',
-    key: 'light',
-    icon: 'ri:sun-foggy-line',
-  },
-  {
-    label: 'Dark',
-    key: 'dark',
-    icon: 'ri:moon-foggy-line',
-  },
-]
 
 const languageOptions: { label: string; key: Language; value: Language }[] = [
   { label: '简体中文', key: 'zh-CN', value: 'zh-CN' },
@@ -141,15 +119,6 @@ function handleImportButtonClick(): void {
           {{ $t('common.save') }}
         </NButton>
       </div>
-      <div class="flex items-center space-x-4">
-        <span class="flex-shrink-0 w-[100px]">{{ $t('setting.description') }}</span>
-        <div class="flex-1">
-          <NInput v-model:value="description" placeholder="" />
-        </div>
-        <NButton size="tiny" text type="primary" @click="updateUserInfo({ description })">
-          {{ $t('common.save') }}
-        </NButton>
-      </div>
       <div
         class="flex items-center space-x-4"
         :class="isMobile && 'items-start'"
@@ -183,22 +152,6 @@ function handleImportButtonClick(): void {
             </template>
             {{ $t('chat.clearHistoryConfirm') }}
           </NPopconfirm>
-        </div>
-      </div>
-      <div class="flex items-center space-x-4">
-        <span class="flex-shrink-0 w-[100px]">{{ $t('setting.theme') }}</span>
-        <div class="flex flex-wrap items-center gap-4">
-          <template v-for="item of themeOptions" :key="item.key">
-            <NButton
-              size="small"
-              :type="item.key === theme ? 'primary' : undefined"
-              @click="appStore.setTheme(item.key)"
-            >
-              <template #icon>
-                <SvgIcon :icon="item.icon" />
-              </template>
-            </NButton>
-          </template>
         </div>
       </div>
       <div class="flex items-center space-x-4">

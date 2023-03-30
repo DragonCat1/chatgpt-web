@@ -40,10 +40,10 @@ const wrapClass = computed(() => {
   return [
     'text-wrap',
     'min-w-[20px]',
-    'rounded-md',
-    isMobile.value ? 'p-2' : 'px-3 py-2',
+    props.inversion ? 'rounded-2xl rounded-tr-none' : 'rounded-2xl rounded-tl-none',
+    isMobile.value ? 'p-2' : 'px-4 py-3',
     props.inversion ? 'bg-[#d2f9d1]' : 'bg-[#f4f6f8]',
-    props.inversion ? 'dark:bg-[#a1dc95]' : 'dark:bg-[#1e1e20]',
+    props.inversion ? 'bg-gradient-to-r from-violet-500 to-purple-500' : 'dark:bg-slate-800',
     props.inversion ? 'message-request' : 'message-reply',
     { 'text-red-500': props.error },
   ]
@@ -64,7 +64,7 @@ defineExpose({ textRef })
 </script>
 
 <template>
-  <div class="text-black" :class="wrapClass">
+  <div :class="wrapClass">
     <template v-if="loading">
       <span class="dark:text-white w-[4px] h-[20px] block animate-blink" />
     </template>
