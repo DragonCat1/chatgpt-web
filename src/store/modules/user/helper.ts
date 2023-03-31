@@ -1,6 +1,8 @@
+import { faker } from '@faker-js/faker'
 import { ss } from '@/utils/storage'
-
 const LOCAL_NAME = 'userStorage'
+
+faker.locale = 'zh_CN'
 
 export interface UserInfo {
   avatar: string
@@ -16,7 +18,7 @@ export function defaultSetting(): UserState {
   return {
     userInfo: {
       avatar: 'https://i.328888.xyz/2023/03/27/in2Z1x.jpeg',
-      name: '未知用户',
+      name: faker.name.fullName().replace(/ /g, ''),
       description: '',
     },
   }

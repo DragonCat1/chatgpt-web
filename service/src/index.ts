@@ -5,6 +5,7 @@ import { chatConfig, chatReplyProcess, currentModel } from './chatgpt'
 import { auth } from './middleware/auth'
 import { limiter } from './middleware/limiter'
 import { isNotEmptyString } from './utils/is'
+import { recordModel } from './database'
 
 const app = express()
 const router = express.Router()
@@ -19,20 +20,29 @@ app.all('*', (_, res, next) => {
   next()
 })
 
-router.post('/chat-process', [auth, limiter], async (req, res) => {
+router.post('/chat-process', [auth, limiter], async (req: express.Request, res) => {
   res.setHeader('Content-type', 'application/octet-stream')
-
+  let response = ''
   try {
-    const { prompt, options = {}, systemMessage } = req.body as RequestProps
+    const { user, prompt, options = {}, systemMessage } = req.body as RequestProps
     let firstChunk = true
     await chatReplyProcess({
       message: prompt,
       lastContext: options,
       process: (chat: ChatMessage) => {
         res.write(firstChunk ? JSON.stringify(chat) : `\n${JSON.stringify(chat)}`)
+        response = chat.text
         firstChunk = false
       },
       systemMessage,
+    })
+    recordModel.create({
+      ip: req.ip,
+      user,
+      message: prompt,
+      response,
+    }).then(() => {
+      console.log('写入成功')
     })
   }
   catch (error) {

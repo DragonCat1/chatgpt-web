@@ -87,7 +87,11 @@ function isActive(uuid: number) {
                 <button class="p-1">
                   <SvgIcon icon="ri:edit-line" @click="handleEdit(item, true, $event)" />
                 </button>
-                <NPopconfirm placement="bottom" @positive-click="handleDeleteDebounce(index, $event)">
+                <NPopconfirm
+                  placement="bottom" :positive-button-props="{
+                    textColor: '#fff',
+                  }" @positive-click="handleDeleteDebounce(index, $event)"
+                >
                   <template #trigger>
                     <button class="p-1">
                       <SvgIcon icon="ri:delete-bin-line" />
